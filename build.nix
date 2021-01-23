@@ -185,6 +185,7 @@ let
 
     nativeBuildInputs = [
       cargo
+      rustc
       # needed at various steps in the build
       jq
       rsync
@@ -199,7 +200,6 @@ let
     inherit builtDependencies;
 
     # some environment variables
-    RUSTC = "${rustc}/bin/rustc";
     cargo_release = lib.optionalString release "--release";
     cargo_options = cargoOptions;
     cargo_build_options = cargoBuildOptions;
@@ -209,6 +209,8 @@ let
 
     configurePhase = ''
       runHook preConfigure
+
+      export RUSTC="${rustc}/bin/rustc";
 
       logRun() {
         >&2 echo "$@"
